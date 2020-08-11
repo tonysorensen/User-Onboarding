@@ -16,7 +16,7 @@ h1 {
   flex-direction: column;
   align-items: center;
   width: 30%;
-  margin-top: 20%;
+  margin-top: 3%;
 }
 
 .input {
@@ -30,27 +30,19 @@ h1 {
 .button {
   background-color: blue;
   color: white;
-  width: 50%;
+  width: 40%;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 15px;
+  padding: 10px;
   margin-top: 10px;
 }
 
-.team {
-  margin-top: 30px;
-}
+.button:disabled{
+  background-image: none;
+  background-color: white;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  color: rgba(0, 0, 0, 0.1);
+  cursor: not-allowed;
 
-.member {
-  background-color: darkslategray;
-  padding: 5px 20px 10px 20px;
-  width: 300px;
-  margin: 10px;
-}
-.member h3 {
-  margin: 10px;
-}
-.member p {
-  margin: 5px;
 }
