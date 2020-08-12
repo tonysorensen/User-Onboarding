@@ -1,7 +1,7 @@
-import React, { useState, useEffect  } from "react";
+import React, { useState, useEffect } from "react";
 import * as yup from "yup";
 import axios from "axios";
-
+import { Button } from "reactstrap";
 function Form() {
   //********** Begin Setting state **********
 
@@ -10,11 +10,11 @@ function Form() {
     name: "",
     email: "",
     password: "",
-    terms: true,
+    terms: false,
   });
 
   //controls whether form can be submitted (see useEffect)
-  const [buttonDisabled, setButtonDisabled] = useState(true);
+  const [buttonDisabled, setButtonDisabled] = useState(false);
 
   //manages state for errors inline validation set in validateInput with yup will update to have an error
   const [errors, setErrors] = useState({
@@ -28,7 +28,7 @@ function Form() {
   const [serverError, setServerError] = useState("");
 
   //users state initialized with an empty array. When a POST request is made state is updated with a new user added to the array and rendered in the app.
-const [users, setUsers] = useState([]);
+  const [users, setUsers] = useState([]);
   //********** End Setting state **********
 
   //********** Begin inline validation (determines if input is valid) **********
@@ -50,52 +50,56 @@ const [users, setUsers] = useState([]);
         });
       });
   };
+
   //********** End inline validation (determines if input is valid) **********
 
-    //********** Begin onSubmit function **********
-    const formSubmit =(e)=>{
-        e.preventDefault()//prevents the attempt to submit the form to the server
-        console.log("form submitted")
-        axios.post("https://reqres.in/api/users", formState)
-        .then((res) => {
-            console.log("success", res.data) // Verify using a `console.log()` that you are receiving a successful response back from POST request
-             // update temp state with value from API to display in <pre>
-             setUsers(res.data)
-        
+  //********** Begin onSubmit function **********
+  const formSubmit = (e) => {
+    e.preventDefault(); //prevents the attempt to submit the form to the server
+    console.log("form submitted");
+    axios
+      .post("https://reqres.in/api/users", formState)
+      .then((res) => {
+        console.log("success", res.data); // Verify using a `console.log()` that you are receiving a successful response back from POST request
 
+        // update state with value from API to display in <pre>
+        setUsers([...users, res.data]);
+        console.log("users array", users);
         // if successful request, clear any server errors
         setServerError(null); // see step 7 in notion notes
 
         //clear state
-setFormState({
-    name: "",
-    email: "",
-    password: "",
-    terms: true,
-})
-        })
-        .catch((err)=> {
-            setServerError('There was an error retreiving data')
-            console.log(err)
-        })
-    }
- //********** End onSubmit function **********
+
+        setFormState({
+          name: "",
+          email: "",
+          password: "",
+          terms: false,
+        });
+      })
+      .catch((err) => {
+        setServerError("There was an error retreiving data");
+        console.log(err);
+      });
+  };
+
+  //********** End onSubmit function **********
 
   //********** Begin onChange function **********
-const inputChange =(e) => {
+  const inputChange = (e) => {
     // use persist with async code -> we pass the event into validateChange that has async promise logic with .validate necessary because we're passing the event asyncronously and we need it to exist even after this function completes (which will complete before validateChange finishes)
     e.persist();
-    console.log("input changed", e.target.value)
+    console.log("input changed", e.target.value);
     const newFormData = {
-        ...formState, [e.target.name]:e.target.type ==="checkbox" ? e.target.checked :
-        e.target.value
-    }
-    validateChange(e)//does inline validation for each change to the form
-    setFormState(newFormData)//updates the state with the new data
-}
+      ...formState,
+      [e.target.name]:
+        e.target.type === "checkbox" ? e.target.checked : e.target.value,
+    };
+    validateChange(e); //does inline validation for each change to the form
+    setFormState(newFormData); //updates the state with the new data
+  };
 
-   //********** End onChange function **********
-
+  //********** End onChange function **********
 
   //********** Begin yup validation (errors if input is NOT valid) **********
   const formSchema = yup.object().shape({
@@ -109,50 +113,87 @@ const inputChange =(e) => {
       .string()
       .required("Password is required")
       .min(8, "Password must be at least 8 characters"),
-    terms: yup.boolean().oneOf([true], "Please agree to the terms"),
+    terms: yup
+      .boolean()
+      .oneOf([true], "Please agree to the terms and conditions"),
   });
   //********** End yup validation (determines if input is valid) **********
 
-
   //********** Begin useEffect  **********
   //validates entire form whenever state changes and enables submit button if changes are valid
-useEffect(() => {
+  useEffect(() => {
     formSchema.isValid(formState).then((isValid) => {
-        setButtonDisabled(!isValid)
-    })
-}, [formState])
+      setButtonDisabled(!isValid);
+    });
+  }, [formState]);
 
   //********** End useEffect **********
-
-
-
+  console.log("users array", users);
   return (
     <form className="form" onSubmit={formSubmit}>
-    {serverError ? <p className="error">{serverError}</p> : null}
+      {serverError ? <p className="error">{serverError}</p> : null}
       <label htmlFor="name">
-        Name
-        <input className="input" id="name" type="text" name="name" value={formState.name} onChange={inputChange}/>
-        {errors.name.length > 0 ? <p className = "error">{errors.name}</p> :null}
+        <em> Name: </em>
+        <input
+          className="input"
+          id="name"
+          type="text"
+          name="name"
+          value={formState.name}
+          onChange={inputChange}
+        />
+        {errors.name.length > 0 ? <p className="error">{errors.name}</p> : null}
       </label>
       <label htmlFor="email">
-        Email
-        <input className="input" id="email" type="text" name="email" value={formState.email} onChange={inputChange}/>
-        {errors.email.length > 0 ? <p className = "error">{errors.email}</p> :null}
+        <em>Email:</em>
+        <input
+          className="input"
+          id="email"
+          type="text"
+          name="email"
+          value={formState.email}
+          onChange={inputChange}
+        />
+        {errors.email.length > 0 ? (
+          <p className="error">{errors.email}</p>
+        ) : null}
       </label>
       <label htmlFor="password">
-        Password
-        <input className="input" id="password" type="text" name="password" value={formState.password} onChange={inputChange}/>
-        {errors.password.length > 0 ? <p className = "error">{errors.password}</p> :null}
+        <em>Password:</em>
+        <input
+          className="input"
+          id="password"
+          type="text"
+          name="password"
+          value={formState.password}
+          onChange={inputChange}
+        />
+        {errors.password.length > 0 ? (
+          <p className="error">{errors.password}</p>
+        ) : null}
       </label>
-      <label htmlFor="terms" className="input">
-      Terms and Conditions
-        <input type="checkbox" id="terms" name="terms" checked={formState.terms} onChange={inputChange}/>
-        {errors.terms.length > 0 ? <p className = "error">{errors.terms}</p> :null}
+      <label htmlFor="terms" className="terms">
+        Terms and Conditions
+        <input
+          className="checkbox"
+          type="checkbox"
+          id="terms"
+          name="terms"
+          checked={formState.terms}
+          onChange={inputChange}
+        />
       </label>
-      <button className="button" disabled={buttonDisabled} type="submit">
+      {errors.terms.length > 0 ? <p className="error">{errors.terms}</p> : null}
+      <Button
+        color="primary"
+        size="lg"
+        className="button"
+        disabled={buttonDisabled}
+        type="submit"
+      >
         Submit
-      </button>
-      <div className= "user">{JSON.stringify(users, null, 2)}</div>
+      </Button>
+      <pre className="user">{JSON.stringify(users, null, 2)}</pre>
     </form>
   );
 }
