@@ -136,6 +136,7 @@ function Form() {
       {serverError ? <p className="error">{serverError}</p> : null}
       <label htmlFor="name">
         <em> Name: </em>
+
         <input
           className="input"
           id="name"
@@ -174,7 +175,7 @@ function Form() {
           <p className="error">{errors.password}</p>
         ) : null}
       </label>
-      <label htmlFor="terms" className="terms">
+      <label htmlFor="terms" className="text-danger">
         Terms and Conditions
         <input
           className="checkbox"

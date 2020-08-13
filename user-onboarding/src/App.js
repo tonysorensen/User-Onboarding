@@ -5,7 +5,7 @@ import Form from './Form'
 function App() {
   return (
     <div className="App" >
-    <h1>User Onboarding</h1>
+    <h1 className="text-primary">User Onboarding</h1>
     <Form />
     </div>
   );

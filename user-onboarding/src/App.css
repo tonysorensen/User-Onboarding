@@ -1,11 +1,11 @@
 body {
-  background-color: lightgray;
+  background-color: rgba(211, 211, 211, 0.2);
 }
 h1 {
   padding-top: 5%;
 }
 .App {
-  background-color: lightgray;
+  background-color: rgba(211, 211, 211, 0.2);
   height: 100vh;
   display: flex;
   flex-direction: column;
@@ -34,11 +34,11 @@ h1 {
   margin: 5px;
   border: 2px solid black;
 }
-.terms {
+.text-danger {
   padding: 10px;
   border: 2px solid black;
 }
-label.terms{
+label.text-danger {
   margin-top: 10%;
 }
 
@@ -67,7 +67,7 @@ label.terms{
   background-color: lightgray;
 }
 
-.checkbox{
+.checkbox {
   margin-left: 10px;
-transform: scale(2);
+  transform: scale(2);
 }
