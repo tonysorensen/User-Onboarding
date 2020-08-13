@@ -11,6 +11,7 @@ function Form() {
     name: "",
     email: "",
     password: "",
+    positions: "",
     terms: false,
   });
 
@@ -22,6 +23,7 @@ function Form() {
     name: "",
     email: "",
     password: "",
+    positions: "",
     terms: "",
   });
 
@@ -75,6 +77,7 @@ function Form() {
           name: "",
           email: "",
           password: "",
+          positions: "",
           terms: false,
         });
       })
@@ -115,6 +118,18 @@ function Form() {
       .string()
       .required("Password is required")
       .min(8, "Password must be at least 8 characters"),
+    positions: yup
+      .string()
+      .oneOf(
+        [
+          "Front-End Developer",
+          "Back-End Developer",
+          "Web UI/Design",
+          "Data Science",
+        ],
+        "Please Select A Role"
+      ),
+
     terms: yup
       .boolean()
       .oneOf([true], "Please agree to the terms and conditions"),
@@ -173,6 +188,23 @@ function Form() {
         />
         {errors.password.length > 0 ? (
           <p className="error">{errors.password}</p>
+        ) : null}
+      </label>
+      <label htmlFor="positions" className="text-info">
+        <select
+          id="positions"
+          name="positions"
+          onChange={inputChange}
+          className="text-info"
+        >
+          <option>---Please select your role---</option>
+          <option value="Front-End Developer">Front-End Developer</option>
+          <option value="Back-End Developer">Back-End Developer</option>
+          <option value="Web UI/Design">Web UI/Design</option>
+          <option value="Data Science">Data Science</option>
+        </select>
+        {errors.positions.length > 0 ? (
+          <p className="error">{errors.position}</p>
         ) : null}
       </label>
       <label htmlFor="terms" className="text-danger">

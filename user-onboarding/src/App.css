@@ -1,9 +1,10 @@
 body {
   background-color: rgba(211, 211, 211, 0.2);
 }
-h1 {
-  padding-top: 5%;
+html {
+  font-size: 62.5%;
 }
+
 .App {
   background-color: rgba(211, 211, 211, 0.2);
   height: 100vh;
@@ -11,12 +12,14 @@ h1 {
   flex-direction: column;
   text-align: center;
   align-items: center;
-  font-size: 20px;
+  font-size: 2.2em;
   font-weight: bold;
 }
-h1 {
+.text-primary {
   display: flex;
   flex-direction: column;
+  padding-top: 5%;
+  font-size: 2.6em;
 }
 .form {
   display: flex;
@@ -45,6 +48,7 @@ label.text-danger {
 .button {
   background-color: rgb(74, 74, 124);
   color: white;
+  height: 50px;
   width: 50%;
   display: flex;
   align-items: center;
@@ -70,4 +74,13 @@ label.text-danger {
 .checkbox {
   margin-left: 10px;
   transform: scale(2);
+}
+
+#positions {
+  width: 100%;
+  margin-top: 5%;
+  
+}
+.text-info{
+  font-size: .9em;
 }
