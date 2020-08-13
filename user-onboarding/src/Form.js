@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import * as yup from "yup";
 import axios from "axios";
 import { Button } from "reactstrap";
+
 function Form() {
   //********** Begin Setting state **********
 
@@ -107,7 +108,8 @@ function Form() {
     email: yup
       .string()
       .email("Must be a valid email")
-      .required("Must include an email"),
+      .required("Must include an email")
+      .notOneOf(["waffle@syrup.com"], "That email is already taken"),
     //set password required and minimum length of 8 characters
     password: yup
       .string()
