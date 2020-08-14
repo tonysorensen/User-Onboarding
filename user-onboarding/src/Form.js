@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import * as yup from "yup";
 import axios from "axios";
 import { Button } from "reactstrap";
-
+import Users from "./Users";
 function Form() {
   //********** Begin Setting state **********
 
@@ -11,7 +11,7 @@ function Form() {
     name: "",
     email: "",
     password: "",
-    positions: "",
+    role: "",
     terms: false,
   });
 
@@ -23,7 +23,7 @@ function Form() {
     name: "",
     email: "",
     password: "",
-    positions: "",
+    role: "",
     terms: "",
   });
 
@@ -55,18 +55,22 @@ function Form() {
   };
 
   //********** End inline validation (determines if input is valid) **********
-
+  const [option, setOption] = React.useState(null);
   //********** Begin onSubmit function **********
   const formSubmit = (e) => {
     e.preventDefault(); //prevents the attempt to submit the form to the server
     console.log("form submitted");
+
     axios
       .post("https://reqres.in/api/users", formState)
       .then((res) => {
         console.log("success", res.data); // Verify using a `console.log()` that you are receiving a successful response back from POST request
 
+        //using spread to add new members to array
+
         // update state with value from API to display in <pre>
         setUsers([...users, res.data]);
+
         console.log("users array", users);
         // if successful request, clear any server errors
         setServerError(null); // see step 7 in notion notes
@@ -77,7 +81,7 @@ function Form() {
           name: "",
           email: "",
           password: "",
-          positions: "",
+          role: "",
           terms: false,
         });
       })
@@ -117,8 +121,8 @@ function Form() {
     password: yup
       .string()
       .required("Password is required")
-      .min(8, "Password must be at least 8 characters"),
-    positions: yup
+      .min(8, "Must be at least 8 characters"),
+    role: yup
       .string()
       .oneOf(
         [
@@ -153,6 +157,7 @@ function Form() {
         <em> Name: </em>
 
         <input
+          data-cy="name"
           className="input"
           id="name"
           type="text"
@@ -165,6 +170,7 @@ function Form() {
       <label htmlFor="email">
         <em>Email:</em>
         <input
+          data-cy="email"
           className="input"
           id="email"
           type="text"
@@ -179,9 +185,10 @@ function Form() {
       <label htmlFor="password">
         <em>Password:</em>
         <input
+          data-cy="password"
           className="input"
           id="password"
-          type="text"
+          type="password"
           name="password"
           value={formState.password}
           onChange={inputChange}
@@ -190,26 +197,28 @@ function Form() {
           <p className="error">{errors.password}</p>
         ) : null}
       </label>
-      <label htmlFor="positions" className="text-info">
+      <label htmlFor="role" className="text-info">
         <select
-          id="positions"
-          name="positions"
+          data-cy="role"
+          id="role"
+          name="role"
           onChange={inputChange}
           className="text-info"
         >
-          <option>---Please select your role---</option>
+          <option>Please select your role</option>
           <option value="Front-End Developer">Front-End Developer</option>
           <option value="Back-End Developer">Back-End Developer</option>
           <option value="Web UI/Design">Web UI/Design</option>
           <option value="Data Science">Data Science</option>
         </select>
-        {errors.positions.length > 0 ? (
+        {errors.role.length > 0 ? (
           <p className="error">{errors.position}</p>
         ) : null}
       </label>
       <label htmlFor="terms" className="text-danger">
         Terms and Conditions
         <input
+          data-cy="terms"
           className="checkbox"
           type="checkbox"
           id="terms"
@@ -220,6 +229,7 @@ function Form() {
       </label>
       {errors.terms.length > 0 ? <p className="error">{errors.terms}</p> : null}
       <Button
+        data-cy="submit"
         color="primary"
         size="lg"
         className="button"
@@ -228,7 +238,7 @@ function Form() {
       >
         Submit
       </Button>
-      <pre className="user">{JSON.stringify(users, null, 2)}</pre>
+      <Users users={users} />
     </form>
   );
 }

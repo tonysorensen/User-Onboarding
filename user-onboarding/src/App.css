@@ -2,6 +2,7 @@ body {
   background-color: rgba(211, 211, 211, 0.2);
 }
 html {
+  background-color: rgba(211, 211, 211, 0.2);
   font-size: 62.5%;
 }
 
@@ -14,6 +15,10 @@ html {
   align-items: center;
   font-size: 2.2em;
   font-weight: bold;
+}
+p {
+  font-size: 0.8em;
+  color: rgb(255, 123, 0);
 }
 .text-primary {
   display: flex;
@@ -76,11 +81,20 @@ label.text-danger {
   transform: scale(2);
 }
 
-#positions {
+#role {
   width: 100%;
   margin-top: 5%;
-  
+  height: 40px;
 }
-.text-info{
-  font-size: .9em;
+.text-info {
+  font-size: 0.9em;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+.users {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: lightslategrey;
+  margin: 5px;
 }
