@@ -55,7 +55,7 @@ function Form() {
   };
 
   //********** End inline validation (determines if input is valid) **********
-  const [option, setOption] = React.useState(null);
+
   //********** Begin onSubmit function **********
   const formSubmit = (e) => {
     e.preventDefault(); //prevents the attempt to submit the form to the server
@@ -204,6 +204,7 @@ function Form() {
           name="role"
           onChange={inputChange}
           className="text-info"
+          value={formState.role}
         >
           <option>Please select your role</option>
           <option value="Front-End Developer">Front-End Developer</option>
